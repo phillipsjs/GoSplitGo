@@ -36,7 +36,7 @@ for (i in names(dataset[,-1])) {
    }
  }
   
-dataset <- dataset %>% gather(show,score,2:11)
+dataset <- gather(dataset,show,score,2:11)
 dataset$show <- factor(c("Calories Burned","Steps Taken","Distance","Floors Climbed","Minutes Sedentary",
                          "Low Activity Minutes","Medium Activity Minutes","High Activity Minutes",
                          "Active Calories Burned","GoSplitGo Score")[dataset$show])
