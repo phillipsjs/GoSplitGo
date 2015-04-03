@@ -19,7 +19,10 @@ shinyUI(
                     choices=levels(dataset$show),
                     selected="score"),
         hr(),
-        helpText("What do you want to see?")
+        helpText("What do you want to see?"),
+        
+        sliderInput("range", "Range:",
+                    min=-30, max = 0, value=c(-7, 0))
       ),
       
       # Create a spot for the barplot
