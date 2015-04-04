@@ -19,7 +19,13 @@ shinyUI(
                     choices=levels(dataset$show),
                     selected="score"),
         hr(),
-        helpText("What do you want to see?")
+        helpText("What do you want to see?"),
+        
+        hr(),
+        
+        sliderInput("past", "No. of days to show:",
+                    min=0, max = 30, value=7
+        )
       ),
       
       # Create a spot for the barplot

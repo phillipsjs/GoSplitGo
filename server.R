@@ -6,7 +6,7 @@ library("fitbitScraper")
 
 mypassword <- "Lsf87Qq6"
 cookie <- login(email="phillipsjonathans@gmail.com", password=mypassword) 
-startDate <- Sys.Date()-6
+startDate <- Sys.Date()-29
 endDate <- Sys.Date()
 goal <- 600
 bonus <- 826
@@ -23,10 +23,12 @@ dataset$goal[dataset$score<goal & dataset$Date<endDate] <- "Rest"
 dataset$goal[dataset$score<=penalty & dataset$Date<endDate] <- "Penalty"
 dataset$goal <- factor(dataset$goal, levels = c("Today","Bonus","Goal","Rest","Penalty"))
 
-dataset$Date <- weekdays(as.Date(dataset$Date))
-weekdays <- c(weekdays(as.Date(startDate)),weekdays(as.Date(startDate+1)),weekdays(as.Date(startDate+2)),weekdays(as.Date(startDate+3))
-              ,weekdays(as.Date(startDate+4)),weekdays(as.Date(startDate+5)),weekdays(as.Date(startDate+6)))
-dataset$Date <- factor(dataset$Date, levels=weekdays)
+#dataset$Date <- weekdays(as.Date(dataset$Date))
+#weekdays <- c(weekdays(as.Date(startDate)),weekdays(as.Date(startDate+1)),weekdays(as.Date(startDate+2)),weekdays(as.Date(startDate+3))
+#              ,weekdays(as.Date(startDate+4)),weekdays(as.Date(startDate+5)),weekdays(as.Date(startDate+6)))
+#dataset$Date <- factor(dataset$Date, levels=weekdays)
+
+dataset$Date <- as.Date(dataset$Date)
 
 ## this converts character numeric vectors to integers 
 for (i in names(dataset[,-1])) {
@@ -44,21 +46,25 @@ dataset$show <- factor(dataset$show, levels=c("GoSplitGo Score", "High Activity 
                                               "Low Activity Minutes","Minutes Sedentary","Steps Taken","Distance","Floors Climbed",
                                               "Calories Burned","Active Calories Burned"))
 
+library(scales)  # To get date formatting for the plot
+
 shinyServer(function(input, output) {
   
   show <- reactive({paste(input$display)})
   output$caption <- renderText({show()})
   
+  
   # Fill in the spot we created for a plot
   output$GSGPlot <- renderPlot({
     
     ##ggplot    
-    print(ggplot(dataset[dataset$show==input$display,], aes(x=Date, y=score, fill=goal)) +
-          geom_bar(stat="identity",position="dodge") +
+    print(ggplot(dataset[dataset$show==input$display & dataset$Date>(Sys.Date()-input$past),], aes(x=Date, y=score, fill=goal)) +
+          geom_bar(stat="identity",position="dodge", color="black") +
           geom_text(aes(label=score,y=score*1.1)) +
                 ylab("") +
                 xlab("") +
-                theme(axis.text.x = element_text(angle = 90, hjust = 1))
+                scale_x_date(labels = date_format("%m/%d")) +  # Look at scales package for more alternatives
+                theme(axis.text.x = element_text(size=15, face="bold"))
           )
   })
 })
