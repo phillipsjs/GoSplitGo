@@ -21,8 +21,10 @@ shinyUI(
         hr(),
         helpText("What do you want to see?"),
         
-        sliderInput("past", "How many days to show:",
-                    min=0, max = 30, value=6
+        hr(),
+        
+        sliderInput("past", "No. of days to show:",
+                    min=0, max = 30, value=7
         )
       ),
       
