@@ -21,8 +21,9 @@ shinyUI(
         hr(),
         helpText("What do you want to see?"),
         
-        sliderInput("range", "Range:",
-                    min=-30, max = 0, value=c(-7, 0))
+        sliderInput("past", "How many days to show:",
+                    min=0, max = 30, value=6
+        )
       ),
       
       # Create a spot for the barplot
