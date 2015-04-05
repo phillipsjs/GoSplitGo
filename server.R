@@ -63,8 +63,8 @@ shinyServer(function(input, output) {
           geom_text(aes(label=score,y=score*1.1)) +
                 ylab("") +
                 xlab("") +
-                scale_x_date(labels = date_format("%m/%d")) +  # Look at scales package for more alternatives
-                theme(axis.text.x = element_text(size=15, face="bold"))
+                scale_x_date(breaks="2 days", minor_breaks="1 day", labels = date_format("%m/%d")) +  # Look at scales package for more alternatives
+                theme(axis.text.x = element_text(size=12, face="bold"))
           )
   })
 })
